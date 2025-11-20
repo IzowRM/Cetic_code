@@ -1,0 +1,34 @@
+# Dépôt git imbriqué dans pythonProject1 (ne pas versionner)
+pythonProject1/.git/
+
+# Données / datasets
+dataset/
+datasets/
+pythonProject1/data/
+
+# Expériences ML lourdes (optionnel mais conseillé)
+pythonProject1/mlruns/
+pythonProject1/wandb/
+pythonProject1/runs/
+pythonProject1/trainer_output/
+*.pt
+
+# Environnements virtuels
+pythonProject1/.venv/
+.venv/
+venv/
+.env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.log
+*.sqlite3
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
