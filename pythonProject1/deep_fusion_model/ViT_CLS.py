@@ -5,8 +5,8 @@ from PIL import ImageOps
 import torch
 from transformers import ViTModel, ViTImageProcessor
 def viT_cls(image):
-    img = image
 
+    img = image
     print('chargement du model ')
     model_name = "google/vit-base-patch16-224"
     processor = ViTImageProcessor.from_pretrained(model_name)
