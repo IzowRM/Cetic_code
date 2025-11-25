@@ -19,6 +19,7 @@ pythonProject1/.venv/
 venv/
 .env/
 
+wandb/
 # Python
 __pycache__/
 *.py[cod]
