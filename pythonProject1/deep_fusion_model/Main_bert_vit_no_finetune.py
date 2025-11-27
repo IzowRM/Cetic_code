@@ -4,17 +4,17 @@ from torch import nn
 from torch.nn import Linear
 import torch.nn.functional as F
 
-from deep_fusion_model.fonctions.FocalLossMultiLabel import FocalLossMultiLabel
-from deep_fusion_model.fonctions.bert_tools import model_bert, bert_features, bert_loader, bert_finetune_features
-from deep_fusion_model.fonctions.tools_for_main import concat_cls, dataset_spliter, multilabel_metrics_from_logits, \
+from fonctions.FocalLossMultiLabel import FocalLossMultiLabel
+from fonctions.bert_tools import model_bert, bert_features, bert_loader, bert_finetune_features
+from fonctions.tools_for_main import concat_cls, dataset_spliter, multilabel_metrics_from_logits, \
     dataset_loader, savemodel
-from deep_fusion_model.fonctions.vit_tools import model_vit, viT_cls
+from fonctions.vit_tools import model_vit, viT_cls
 # from ViT_CLS import viT_cls
 import torch
 from torch.optim import AdamW
 
-from deep_fusion_model.model.FusionHead import FusionHead
-from late_fusion_model.fonctions.model_loader import Bert_loader
+from model.FusionHead import FusionHead
+
 
 def main_bert_vit_no_finetune(ds,bert_model,vit_model):
 
@@ -42,7 +42,7 @@ def data_set_creation():
     # bert_model = model_bert()
     # Bert avec finetune
     bert_model = bert_loader()
-    vit_model = model_vit()
+    vit_model = model_vit().eval()
 
     print('Chargement du ds')
     ds = load_from_disk("../data/dataset_tokenized")

@@ -5,8 +5,7 @@ from datasets import load_dataset, Dataset, load_from_disk
 from safetensors.torch import load_model
 from transformers import CLIPModel
 from transformers import AutoProcessor
-
-from deep_fusion_model.fonctions.Clip_function import unfreeze_clip_blocks
+from fonctions.Clip_function import unfreeze_clip_blocks
 from model.MultiModalDataset import MultiModalDataset
 from model.CLIPMultiLabelHF import CLIPMultiLabelHF
 def clip_pipe_classification():
@@ -75,7 +74,7 @@ def clip_pipe_classification():
             "f1_macro": f1_score(labels, preds, average="macro"),
         }
 
-    unfreeze_clip_blocks(model, n_last_vision=5, n_last_text=5)
+    # unfreeze_clip_blocks(model, n_last_vision=5, n_last_text=5)
 
     trainer = Trainer(
         model=model,

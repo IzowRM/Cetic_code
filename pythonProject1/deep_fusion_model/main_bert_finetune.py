@@ -1,4 +1,4 @@
-from late_fusion_model.fonctions.model_loader import Bert_loader
+
 def main_bert_finetune():
 
 
