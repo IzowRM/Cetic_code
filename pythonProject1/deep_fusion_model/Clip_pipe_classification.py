@@ -5,6 +5,8 @@ from datasets import load_dataset, Dataset, load_from_disk
 from safetensors.torch import load_model
 from transformers import CLIPModel
 from transformers import AutoProcessor
+
+from deep_fusion_model.fonctions.Clip_function import unfreeze_clip_blocks
 from model.MultiModalDataset import MultiModalDataset
 from model.CLIPMultiLabelHF import CLIPMultiLabelHF
 def clip_pipe_classification():
@@ -48,7 +50,7 @@ def clip_pipe_classification():
         output_dir="./clip_multilabel",
         per_device_train_batch_size=64,
         per_device_eval_batch_size=64,
-        num_train_epochs=5,
+        num_train_epochs=10,
         learning_rate=lr,
         weight_decay=wd,
         eval_strategy="epoch",
@@ -57,6 +59,7 @@ def clip_pipe_classification():
         load_best_model_at_end=True,
         metric_for_best_model="f1_micro",
         remove_unused_columns=False,
+        report_to='none'
     )
 
     def compute_metrics(eval_pred):
@@ -72,29 +75,7 @@ def clip_pipe_classification():
             "f1_macro": f1_score(labels, preds, average="macro"),
         }
 
-    # D'abord, tout geler (déjà fait dans __init__)
-    for p in model.clip.parameters():
-        p.requires_grad = False
-
-    # Nombre de couches
-    n_vision = len(model.clip.vision_model.encoder.layers)
-    n_text = len(model.clip.text_model.encoder.layers)
-
-    # Dégeler les 2 derniers blocs de l'encodeur image
-    for i in range(n_vision - 2, n_vision):
-        for p in model.clip.vision_model.encoder.layers[i].parameters():
-            p.requires_grad = True
-
-    # Dégeler les 2 derniers blocs de l'encodeur texte
-    for i in range(n_text - 2, n_text):
-        for p in model.clip.text_model.encoder.layers[i].parameters():
-            p.requires_grad = True
-
-    # (Optionnel) dégeler les projections finales
-    for p in model.clip.visual_projection.parameters():
-        p.requires_grad = True
-    for p in model.clip.text_projection.parameters():
-        p.requires_grad = True
+    unfreeze_clip_blocks(model, n_last_vision=5, n_last_text=5)
 
     trainer = Trainer(
         model=model,
